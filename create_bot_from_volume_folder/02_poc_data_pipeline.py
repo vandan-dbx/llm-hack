@@ -78,7 +78,7 @@ mlflow.log_dict(data_pipeline_config, "data_pipeline_config.json")
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Step 1: Load the files from the UC Volume
+# MAGIC ##  Optional Step 1: Load the files from the UC Volume (This step has been done for you)
 # MAGIC
 # MAGIC In Bronze/Silver/Gold terminology, this is your Bronze table.
 # MAGIC
@@ -225,13 +225,6 @@ mlflow.log_input(mlflow.data.load_delta(table_name=destination_tables_config.get
 
 # COMMAND ----------
 
-# with open("/Volumes/mlops_pj/rag_puneetjain/gsk_hackathon_dumps/tumor suppressor gene therapy/10.1016_j.jcmgh.2024.101390.pdf", 'rb') as pdf_file:
-#   reader = PdfReader(pdf_file)
-#   parsed_content = [page_content.extract_text() for page_content in reader.pages]
-# print(parsed_content)
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ## Step 3: Chunk the parsed text
 # MAGIC
@@ -345,6 +338,7 @@ chunker_udf = func.udf(
 # COMMAND ----------
 
 # Run the chunker
+parsed_files_df = parsed_files_df.repartition(7).cache()
 chunked_files_df = parsed_files_df.withColumn(
     "chunked",
     chunker_udf("doc_parsed_contents.parsed_content"),
@@ -353,10 +347,10 @@ chunked_files_df = parsed_files_df.withColumn(
 # Check and warn on any errors
 errors_df = chunked_files_df.filter(chunked_files_df.chunked.chunker_status != "SUCCESS")
 
-num_errors = errors_df.count()
-if num_errors > 0:
-    print(f"{num_errors} chunks had parse errors.  Please review.")
-    display(errors_df)
+# num_errors = errors_df.count()
+# if num_errors > 0:
+#     print(f"{num_errors} chunks had parse errors.  Please review.")
+#     display(errors_df)
 
 # Filter for successful chunks
 chunked_files_df = chunked_files_df.filter(chunked_files_df.chunked.chunker_status == "SUCCESS").select(
@@ -460,7 +454,7 @@ print(f"Gold Delta Table w/ chunked files: {get_table_url(destination_tables_con
 # COMMAND ----------
 
 # DBTITLE 1,Testing the Index
-index.similarity_search(columns=["chunked_text", "chunk_id", "path"], query_text="your query text")
+index.similarity_search(columns=["chunked_text", "chunk_id", "pdf_output"], query_text="What is Leukemia")
 
 # COMMAND ----------
 
@@ -479,3 +473,7 @@ chain_config = {
 mlflow.log_dict(chain_config, "chain_config.json")
 
 mlflow.end_run()
+
+# COMMAND ----------
+
+
