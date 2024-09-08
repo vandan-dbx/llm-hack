@@ -107,7 +107,7 @@ from databricks.sdk import WorkspaceClient
 from databricks.sdk.service.vectorsearch import EndpointType
 w = WorkspaceClient()
 vector_search_endpoints = w.vector_search_endpoints.list_endpoints()
-if sum([VECTOR_SEARCH_ENDPOINT == ve.name for ve in vector_search_endpoints]) == 0:
+if sum([VECTOR_SEARCH_ENDPOINT == ve.name for ve in vector_search_endpoints]) == 0 or not vector_search_endpoints:
     print(f"Please wait, creating Vector Search endpoint `{VECTOR_SEARCH_ENDPOINT}`.  This can take up to 20 minutes...")
     w.vector_search_endpoints.create_endpoint_and_wait(VECTOR_SEARCH_ENDPOINT, endpoint_type=EndpointType.STANDARD)
 
@@ -115,3 +115,7 @@ if sum([VECTOR_SEARCH_ENDPOINT == ve.name for ve in vector_search_endpoints]) ==
 w.vector_search_endpoints.wait_get_endpoint_vector_search_endpoint_online(VECTOR_SEARCH_ENDPOINT)
 
 print(f"PASS: Vector Search endpoint `{VECTOR_SEARCH_ENDPOINT}` exists")
+
+# COMMAND ----------
+
+
