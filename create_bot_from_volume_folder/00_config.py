@@ -88,7 +88,7 @@ data_pipeline_config = {
 # Names of the output Delta Tables tables & Vector Search index
 destination_tables_config = {
     # Staging table with the raw files & metadata
-    "raw_files_table_name": f"`{UC_CATALOG}`.`{UC_SCHEMA}`.`bronze_pubmed_pdf_list`",
+    "raw_files_table_name": f"`hackathon`.`main`.`bronze_pubmed_pdf_list`",
     # Parsed documents
     "parsed_docs_table_name": f"`{UC_CATALOG}`.`{UC_SCHEMA}`.`{RAG_APP_NAME}_poc_parsed_docs_silver`",
     # Chunked documents that are loaded into the Vector Index
@@ -162,7 +162,7 @@ rag_chain_config = {
         "vector_search_endpoint_name": VECTOR_SEARCH_ENDPOINT,
         # Databricks Model Serving endpoint name
         # This is the generator LLM where your LLM queries are sent.
-        "llm_endpoint_name": "databricks-meta-llama-3-1-70b-instruct",
+        "llm_endpoint_name": "databricks-mixtral-8x7b-instruct",
     },
     "retriever_config": {
         # Vector Search index that is created by the data pipeline
@@ -174,17 +174,17 @@ rag_chain_config = {
             # The column name in the retriever's response that contains the returned chunk.
             "chunk_text": "chunked_text",
             # The template of the chunk returned by the retriever - used to format the chunk for presentation to the LLM.
-            "document_uri": "pdf_output",
+            "document_uri": "title",
 
+            "volumne_path": "pdf_output",
             "topic": "topic",
-            "title": "title",
         },
         # Prompt template used to format the retrieved information to present to the LLM to help in answering the user's question
-        "chunk_template": "Passage: {chunk_text}\n",
+        "chunk_template": "Important piece of information: {chunk_text} from this document: {document_uri}\n",
         # The column name in the retriever's response that refers to the original document.
         "parameters": {
             # Number of search results that the retriever returns
-            "k": 5,
+            "k": 1,
             # Type of search to run
             # Semantic search: `ann`
             # Hybrid search (keyword + sementic search): `hybrid`
@@ -195,7 +195,7 @@ rag_chain_config = {
     },
     "llm_config": {
         # Define a template for the LLM prompt.  This is how the RAG chain combines the user's question and the retrieved context.
-        "llm_system_prompt_template": """You are an assistant that answers questions. Use the following pieces of retrieved context to answer the question. Some pieces of context may be irrelevant, in which case you should not use them to form the answer.
+        "llm_system_prompt_template": """You are an assistant that answers questions.
 
 Context: {context}""".strip(),
         # Parameters that control how the LLM responds.

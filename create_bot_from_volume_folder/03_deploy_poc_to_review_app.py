@@ -72,7 +72,7 @@ chain_input = {
     ]
 }
 chain = mlflow.langchain.load_model(logged_chain_info.model_uri)
-chain.invoke(chain_input)
+print(chain.invoke(chain_input))
 
 # COMMAND ----------
 
@@ -116,7 +116,7 @@ uc_registered_model_info = mlflow.register_model(model_uri=logged_chain_info.mod
 deployment_info = agents.deploy(model_name=UC_MODEL_NAME, model_version=uc_registered_model_info.version)
 
 browser_url = mlflow.utils.databricks_utils.get_browser_hostname()
-print(f"\n\nView deployment status: https://{browser_url}/ml/endpoints/{deployment_info.endpoint_name}")
+print(f"\n\nView deployment status: {browser_url}/ml/endpoints/{deployment_info.endpoint_name}")
 
 # Add the user-facing instructions to the Review App
 agents.set_review_instructions(UC_MODEL_NAME, instructions_to_reviewer)
@@ -140,10 +140,10 @@ print(f"\n\nReview App: {deployment_info.review_app_url}")
 
 # COMMAND ----------
 
-user_list = ["lara.rachidi@databricks.com","nikolay.manchev@databricks.com"]
+# user_list = ["lara.rachidi@databricks.com","nikolay.manchev@databricks.com"]
 
 # Set the permissions.  If successful, there will be no return value.
-agents.set_permissions(model_name=UC_MODEL_NAME, users=user_list, permission_level=agents.PermissionLevel.CAN_QUERY)
+# agents.set_permissions(model_name=UC_MODEL_NAME, users=user_list, permission_level=agents.PermissionLevel.CAN_QUERY)
 
 # COMMAND ----------
 
