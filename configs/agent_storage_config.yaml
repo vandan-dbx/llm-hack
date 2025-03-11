@@ -1,4 +1,0 @@
-class_path: cookbook.config.shared.agent_storage_location.AgentStorageConfig
-evaluation_set_uc_table: mlops_pj.hackathon.pharma_agent_eval_set
-mlflow_experiment_name: /Users/puneet.jain@databricks.com/pharma_agent_mlflow_experiment
-uc_model_name: mlops_pj.hackathon.pharma_agent
