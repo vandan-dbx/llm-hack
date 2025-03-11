@@ -62,6 +62,13 @@
 # MAGIC set_uc_function_client(client)
 # MAGIC
 # MAGIC ############################################
+# MAGIC #Define the UC Credentials 
+# MAGIC ############################################
+# MAGIC CATALOG = 'mlops_pj'
+# MAGIC SCHEMA = 'hackathon'
+# MAGIC
+# MAGIC
+# MAGIC ############################################
 # MAGIC # Define your LLM endpoint and system prompt
 # MAGIC ############################################
 # MAGIC LLM_ENDPOINT_NAME = "databricks-meta-llama-3-3-70b-instruct"
@@ -78,24 +85,11 @@
 # MAGIC tools = []
 # MAGIC
 # MAGIC ##### You can use UDFs in Unity Catalog as agent tools ######
-# MAGIC uc_tool_names = [f"mlops_pj.hackathon.search_medical_leaflet",
-# MAGIC                  "mlops_pj.hackathon.lookup_medicine_info",
-# MAGIC                  "mlops_pj.hackathon.lookup_drug_info"]
+# MAGIC uc_tool_names = [f"{CATALOG}.{SCHEMA}.search_medical_leaflet",
+# MAGIC                  f"{CATALOG}.{SCHEMA}.lookup_medicine_info",
+# MAGIC                  f"{CATALOG}.{SCHEMA}.hackathon.lookup_drug_info"]
 # MAGIC uc_toolkit = UCFunctionToolkit(function_names=uc_tool_names)
 # MAGIC tools.extend(uc_toolkit.tools)
-# MAGIC
-# MAGIC # Use Databricks vector search indexes as tools
-# MAGIC # See https://learn.microsoft.com/azure/databricks/generative-ai/agent-framework/unstructured-retrieval-tools
-# MAGIC # for details
-# MAGIC
-# MAGIC # TODO: Add vector search indexes
-# MAGIC # vector_search_tools = [
-# MAGIC #         VectorSearchRetrieverTool(
-# MAGIC #         index_name="",
-# MAGIC #         # filters="..."
-# MAGIC #     )
-# MAGIC # ]
-# MAGIC # tools.extend(vector_search_tools)
 # MAGIC
 # MAGIC #####################
 # MAGIC ## Define agent logic
@@ -345,17 +339,20 @@ mlflow.models.predict(
 
 # COMMAND ----------
 
-mlflow.set_registry_uri("databricks-uc")
+from cookbook.config.shared.agent_storage_location import AgentStorageConfig
+from cookbook.databricks_utils import get_table_url
+from cookbook.config import load_serializable_config_from_yaml_file
 
-# TODO: define the catalog, schema, and model name for your UC model
-catalog = "mlops_pj"
-schema = "hackathon"
-model_name = "pharma_agent"
-UC_MODEL_NAME = f"{catalog}.{schema}.{model_name}"
+# Load the Agent's storage configuration
+agent_storage_config: AgentStorageConfig = load_serializable_config_from_yaml_file('./configs/agent_storage_config.yaml')
+
+# COMMAND ----------
+
+mlflow.set_registry_uri("databricks-uc")
 
 # register the model to UC
 uc_registered_model_info = mlflow.register_model(
-    model_uri=logged_agent_info.model_uri, name=UC_MODEL_NAME
+    model_uri=logged_agent_info.model_uri, name=agent_storage_config.uc_model_name
 )
 
 # COMMAND ----------
@@ -366,7 +363,8 @@ uc_registered_model_info = mlflow.register_model(
 # COMMAND ----------
 
 from databricks import agents
-agents.deploy(UC_MODEL_NAME, uc_registered_model_info.version, tags = {"endpointSource": "playground"})
+agents.deploy(gent_storage_config.uc_model_name
+), uc_registered_model_info.version, tags = {"endpointSource": "playground"})
 
 # COMMAND ----------
 
