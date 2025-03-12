@@ -222,7 +222,7 @@ if not is_valid:
 from cookbook.config.data_pipeline.recursive_text_splitter import RecursiveTextSplitterChunkingConfig
 
 chunking_config = RecursiveTextSplitterChunkingConfig(
-    embedding_model_endpoint="databricks-gte-large-en",  # A Model Serving endpoint supporting the /llm/v1/embeddings task
+    embedding_model_endpoint="gte-large-en",  # A Model Serving endpoint supporting the /llm/v1/embeddings task
     chunk_size_tokens=64,
     chunk_overlap_tokens=32,
 )
