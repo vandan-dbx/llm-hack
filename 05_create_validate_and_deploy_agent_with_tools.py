@@ -64,8 +64,8 @@
 # MAGIC ############################################
 # MAGIC #Define the UC Credentials 
 # MAGIC ############################################
-# MAGIC CATALOG = 'mlops_pj'
-# MAGIC SCHEMA = 'hackathon'
+# MAGIC CATALOG = '...' # ReplaceME
+# MAGIC SCHEMA = '...' # ReplaceME
 # MAGIC
 # MAGIC
 # MAGIC ############################################
@@ -87,7 +87,7 @@
 # MAGIC ##### You can use UDFs in Unity Catalog as agent tools ######
 # MAGIC uc_tool_names = [f"{CATALOG}.{SCHEMA}.search_medical_leaflet",
 # MAGIC                  f"{CATALOG}.{SCHEMA}.lookup_medicine_info",
-# MAGIC                  f"{CATALOG}.{SCHEMA}.hackathon.lookup_drug_info"]
+# MAGIC                  f"{CATALOG}.{SCHEMA}.lookup_drug_info"]
 # MAGIC uc_toolkit = UCFunctionToolkit(function_names=uc_tool_names)
 # MAGIC tools.extend(uc_toolkit.tools)
 # MAGIC
@@ -191,6 +191,18 @@
 
 # COMMAND ----------
 
+dbutils.library.restartPython()
+
+# COMMAND ----------
+
+############################################
+#Define the UC Credentials 
+############################################
+CATALOG = '.....' # ReplaceME
+SCHEMA = '......' # ReplaceME
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ## Test the agent
 # MAGIC
@@ -238,9 +250,9 @@ for tool in tools:
         resources.append(DatabricksFunction(function_name=tool.uc_function_name))
 
 # **** Ensure all the relevant tables have been provided ****
-table_list = ['nmanchev.pharma.medicine_leaflets_chunked_index',
-              'nmanchev.pharma.drugs_com',
-              'nmanchev.pharma.medicine'] 
+table_list = [f'{CATALOG}.{SCHEMA}.medicine_leaflets_chunked_index',
+              'gsk_hackathon.raw_data.drugs',
+              'gsk_hackathon.raw_data.medicine'] 
 
 for table in table_list:
     resources.append(DatabricksTable(table_name=table))
@@ -282,6 +294,15 @@ with mlflow.start_run():
 
 # COMMAND ----------
 
+from cookbook.config.shared.agent_storage_location import AgentStorageConfig
+from cookbook.databricks_utils import get_table_url
+from cookbook.config import load_serializable_config_from_yaml_file
+
+# Load the Agent's storage configuration
+agent_storage_config: AgentStorageConfig = load_serializable_config_from_yaml_file('./configs/agent_storage_config.yaml')
+
+# COMMAND ----------
+
 import pandas as pd
 
 # eval_examples = [
@@ -298,7 +319,7 @@ import pandas as pd
 #     }
 # ]
 
-eval_dataset = spark.read.table("mlops_pj.hackathon.pharma_agent_eval_set").toPandas() 
+eval_dataset = spark.read.table(agent_storage_config.evaluation_set_uc_table).toPandas() 
 display(eval_dataset)
 
 
@@ -339,15 +360,6 @@ mlflow.models.predict(
 
 # COMMAND ----------
 
-from cookbook.config.shared.agent_storage_location import AgentStorageConfig
-from cookbook.databricks_utils import get_table_url
-from cookbook.config import load_serializable_config_from_yaml_file
-
-# Load the Agent's storage configuration
-agent_storage_config: AgentStorageConfig = load_serializable_config_from_yaml_file('./configs/agent_storage_config.yaml')
-
-# COMMAND ----------
-
 mlflow.set_registry_uri("databricks-uc")
 
 # register the model to UC
@@ -363,8 +375,8 @@ uc_registered_model_info = mlflow.register_model(
 # COMMAND ----------
 
 from databricks import agents
-agents.deploy(gent_storage_config.uc_model_name
-), uc_registered_model_info.version, tags = {"endpointSource": "playground"})
+agents.deploy(agent_storage_config.uc_model_name
+, uc_registered_model_info.version, tags = {"endpointSource": "playground"})
 
 # COMMAND ----------
 

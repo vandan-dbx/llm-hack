@@ -67,7 +67,7 @@ class UCVolumeSourceConfig(SerializableConfig):
     def create_catalog(self):
         try:
             w = WorkspaceClient()
-            w.catalog.create(
+            w.catalogs.create(
                 name=self.uc_catalog_name)
         except ResourceAlreadyExists:
             pass

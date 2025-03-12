@@ -118,12 +118,9 @@ from cookbook.data_pipeline import copy_files
 
 # Configure the UC Volume that contains the source documents
 source_config = UCVolumeSourceConfig(
-    # uc_catalog_name="REPLACE_ME", # REPLACE_ME
-    # uc_schema_name="REPLACE_ME", # REPLACE_ME
-    # uc_volume_name=f"REPLACE_ME", # REPLACE_ME
-    uc_catalog_name="mlops_pj", # REPLACE_ME
-    uc_schema_name="hackathon", # REPLACE_ME
-    uc_volume_name=f"leaflets", # REPLACE_ME
+    uc_catalog_name=".....", # REPLACE_ME
+    uc_schema_name="......", # REPLACE_ME
+    uc_volume_name=f".....", # REPLACE_ME
 )
 
 # Check if volume exists, create otherwise
@@ -175,7 +172,7 @@ output_config = DataPipelineOuputConfig(
     #base_table_name=source_config.uc_volume_name, # usually similar / same as the source volume name; by default, is the same as the volume_name
     base_table_name="medicine", # usually similar / same as the source volume name; by default, is the same as the volume_name
     # vector_search_endpoint="REPLACE_ME", # Vector Search endpoint to store the index
-    vector_search_endpoint="one-env-shared-endpoint-11", # Vector Search endpoint to store the index
+    vector_search_endpoint="shared-endpoint-0", # Vector Search endpoint to store the index
 
     # Optional parameters, showing defaults
     docs_table_postfix="leaflets",              # default value is `docs`
