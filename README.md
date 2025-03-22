@@ -1,6 +1,6 @@
-# LLM GSK Hack - Agentic AI Project
+# LLM Medicines Information Hack - Agentic AI Project
 
-This repository contains the codebase for the GSK Agentic AI Hackathon project. The project focuses on leveraging Large Language Models (LLMs) to create intelligent, agentic solutions for pharmaceutical research and development.
+This repository contains the codebase for the Medicines Information Agentic AI Hackathon project. The project focuses on leveraging Large Language Models (LLMs) to create intelligent, agentic solutions for pharmaceutical research and development.
 
 ## Project Overview
 
@@ -47,15 +47,15 @@ This project aims to demonstrate the potential of agentic AI in pharmaceutical r
    b. **Link Repository to Databricks:**
    - In Databricks workspace, click on "Repos" in the sidebar
    - Click on "Add Repo"
-   - Enter your repository URL: `https://github.com/yourusername/llm-gsk-hack.git`
+   - Enter your repository URL: `https://github.com/yourusername/llm-hack.git`
    - Choose a name for the repo folder
    - Click "Create"
 > Your Repo > ⋮ (menu) > Git Actions
 
 2. **Clone repository locally (optional):**
 ```bash
-git clone https://github.com/yourusername/llm-gsk-hack.git
-cd llm-gsk-hack
+git clone https://github.com/yourusername/llm-hack.git
+cd llm-hack
 ```
 
 ## Contributing
