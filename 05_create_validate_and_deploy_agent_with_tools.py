@@ -251,8 +251,8 @@ for tool in tools:
 
 # **** Ensure all the relevant tables have been provided ****
 table_list = [f'{CATALOG}.{SCHEMA}.medicine_leaflets_chunked_index',
-              'gsk_hackathon.raw_data.drugs',
-              'gsk_hackathon.raw_data.medicine'] 
+              'common.raw_data.drugs',
+              'common.raw_data.medicine'] 
 
 for table in table_list:
     resources.append(DatabricksTable(table_name=table))
