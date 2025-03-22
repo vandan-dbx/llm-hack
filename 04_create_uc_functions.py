@@ -41,7 +41,7 @@ dbutils.widgets.text("INDEX_NAME", str(data_pipeline_config.output.vector_index)
 # MAGIC RETURNS TABLE(drugName STRING , condition STRING, review STRING,rating INT, usefulCount int ,date STRING)
 # MAGIC COMMENT "Returns the top 10 reviews for a drug (from the drugs_com table), ordered by usefulness"
 # MAGIC RETURN SELECT drugName,condition,review,rating,usefulCount,date
-# MAGIC   FROM gsk_hackathon.raw_data.drugs 
+# MAGIC   FROM common.raw_data.drugs 
 # MAGIC   WHERE drugName like concat("%",drug_name,"%")
 # MAGIC   ORDER BY usefulCount DESC
 # MAGIC   LIMIT 1
@@ -57,7 +57,7 @@ dbutils.widgets.text("INDEX_NAME", str(data_pipeline_config.output.vector_index)
 # MAGIC COMMENT "Returns concatenated medicine information"
 # MAGIC RETURN select concat("name: ",name,
 # MAGIC              " ,substitute0: ",COALESCE(substitute0,""),
-# MAGIC              " ,use0: ",COALESCE(use0,"")) from gsk_hackathon.raw_data.medicine where name like concat("%",lower(medicine_name),"%") LIMIT 1
+# MAGIC              " ,use0: ",COALESCE(use0,"")) from common.raw_data.medicine where name like concat("%",lower(medicine_name),"%") LIMIT 1
 # MAGIC
 # MAGIC   -- Give the side effects of drug Levofloxacin?
 
@@ -66,7 +66,7 @@ dbutils.widgets.text("INDEX_NAME", str(data_pipeline_config.output.vector_index)
 # MAGIC %sql
 # MAGIC select  concat("name: ",name,
 # MAGIC              " ,substitute0: ",COALESCE(substitute0,""))
-# MAGIC   from gsk_hackathon.raw_data.medicine LIMIT 1
+# MAGIC   from common.raw_data.medicine LIMIT 1
 
 # COMMAND ----------
 
