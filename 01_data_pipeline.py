@@ -71,6 +71,13 @@
 
 # COMMAND ----------
 
+from cookbook.databricks_utils import get_current_user_info
+user_email, user_name, default_catalog = get_current_user_info(spark)
+
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS users.{user_name}")
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ### Connect to Databricks (Local IDE only)
 # MAGIC
