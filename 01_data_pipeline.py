@@ -118,9 +118,9 @@ from cookbook.data_pipeline import copy_files
 
 # Configure the UC Volume that contains the source documents
 source_config = UCVolumeSourceConfig(
-    uc_catalog_name=".....", # REPLACE_ME
-    uc_schema_name="......", # REPLACE_ME
-    uc_volume_name=f".....", # REPLACE_ME
+    uc_catalog_name="workspace", # REPLACE_ME
+    uc_schema_name="shared", # REPLACE_ME
+    uc_volume_name=f"leaflets", # REPLACE_ME
 )
 
 # Check if volume exists, create otherwise
@@ -167,12 +167,12 @@ from cookbook.config.data_pipeline.data_pipeline_output import DataPipelineOuput
 # Output configuration
 output_config = DataPipelineOuputConfig(
     # Required parameters
-    uc_catalog_name=source_config.uc_catalog_name, # usually same as source volume catalog, by default is the same as the source volume catalog
-    uc_schema_name=source_config.uc_schema_name, # usually same as source volume schema, by default is the same as the source volume schema
+    uc_catalog_name="users", # usually same as source volume catalog, by default is the same as the source volume catalog
+    uc_schema_name="daniel_brookes", # usually same as source volume schema, by default is the same as the source volume schema
     #base_table_name=source_config.uc_volume_name, # usually similar / same as the source volume name; by default, is the same as the volume_name
     base_table_name="medicine", # usually similar / same as the source volume name; by default, is the same as the volume_name
     # vector_search_endpoint="REPLACE_ME", # Vector Search endpoint to store the index
-    vector_search_endpoint="shared-endpoint-0", # Vector Search endpoint to store the index
+    vector_search_endpoint="vs-default", # Vector Search endpoint to store the index
 
     # Optional parameters, showing defaults
     docs_table_postfix="leaflets",              # default value is `docs`
@@ -222,7 +222,7 @@ if not is_valid:
 from cookbook.config.data_pipeline.recursive_text_splitter import RecursiveTextSplitterChunkingConfig
 
 chunking_config = RecursiveTextSplitterChunkingConfig(
-    embedding_model_endpoint="gte-large-en",  # A Model Serving endpoint supporting the /llm/v1/embeddings task
+    embedding_model_endpoint="databricks-gte-large-en",  # A Model Serving endpoint supporting the /llm/v1/embeddings task
     chunk_size_tokens=64,
     chunk_overlap_tokens=32,
 )

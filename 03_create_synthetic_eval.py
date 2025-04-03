@@ -107,7 +107,7 @@ display(source_documents.toPandas())
 
 # COMMAND ----------
 
-from databricks.agents.eval import generate_evals_df
+from databricks.agents.evals import generate_evals_df
 
 # NOTE: The guidelines you provide are a free-form string. The markdown string below is the suggested formatting for the set of guidelines, however you are free
 # to add your sections here. Note that this will be prompt-engineering an LLM that generates the synthetic data, so you may have to iterate on these guidelines before
@@ -144,7 +144,3 @@ spark.createDataFrame(synthesized_evals_df).write.format("delta").mode("overwrit
 # Display the synthetic evaluation data
 eval_set_df = spark.table(agent_storage_config.evaluation_set_uc_table)
 display(eval_set_df.toPandas())
-
-# COMMAND ----------
-
-

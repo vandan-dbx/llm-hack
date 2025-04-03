@@ -1,0 +1,4 @@
+class_path: cookbook.config.shared.agent_storage_location.AgentStorageConfig
+evaluation_set_uc_table: users.daniel_brookes.pharma_agent_eval_set
+mlflow_experiment_name: /Users/daniel.brookes@astrazeneca.com/pharma_agent_mlflow_experiment
+uc_model_name: users.daniel_brookes.pharma_agent

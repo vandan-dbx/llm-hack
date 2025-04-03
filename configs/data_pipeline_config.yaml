@@ -1,0 +1,19 @@
+chunking_config:
+  chunk_overlap_tokens: 32
+  chunk_size_tokens: 64
+  class_path: cookbook.config.data_pipeline.recursive_text_splitter.RecursiveTextSplitterChunkingConfig
+  embedding_model_endpoint: databricks-gte-large-en
+class_path: cookbook.config.data_pipeline.DataPipelineConfig
+output:
+  chunked_docs_table: users.daniel_brookes.medicine_leaflets_chunked
+  class_path: cookbook.config.data_pipeline.data_pipeline_output.DataPipelineOuputConfig
+  parsed_docs_table: users.daniel_brookes.medicine_leaflets
+  vector_index: users.daniel_brookes.medicine_leaflets_chunked_index
+  vector_search_endpoint: vs-default
+source:
+  class_path: cookbook.config.data_pipeline.uc_volume_source.UCVolumeSourceConfig
+  uc_catalog_name: workspace
+  uc_schema_name: shared
+  uc_volume_name: leaflets
+  volume_path: /Volumes/workspace/shared/leaflets
+  volume_uc_fqn: workspace.shared.leaflets
