@@ -64,9 +64,8 @@
 # MAGIC ############################################
 # MAGIC #Define the UC Credentials 
 # MAGIC ############################################
-# MAGIC CATALOG = '...' # ReplaceME
-# MAGIC SCHEMA = '...' # ReplaceME
-# MAGIC
+# MAGIC CATALOG = 'users'
+# MAGIC SCHEMA = '' # REPLACE WITH YOUR SCHEMA :)
 # MAGIC
 # MAGIC ############################################
 # MAGIC # Define your LLM endpoint and system prompt
@@ -198,8 +197,10 @@ dbutils.library.restartPython()
 ############################################
 #Define the UC Credentials 
 ############################################
-CATALOG = '.....' # ReplaceME
-SCHEMA = '......' # ReplaceME
+from cookbook.databricks_utils import get_current_user_info
+user_email, user_name, default_catalog = get_current_user_info(spark)
+CATALOG = 'users'
+SCHEMA = user_name
 
 # COMMAND ----------
 
@@ -251,8 +252,8 @@ for tool in tools:
 
 # **** Ensure all the relevant tables have been provided ****
 table_list = [f'{CATALOG}.{SCHEMA}.medicine_leaflets_chunked_index',
-              'common.raw_data.drugs',
-              'common.raw_data.medicine'] 
+              'workspace.shared.drugs',
+              'workspace.shared.medicine'] 
 
 for table in table_list:
     resources.append(DatabricksTable(table_name=table))

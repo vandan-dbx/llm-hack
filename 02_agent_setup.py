@@ -80,8 +80,8 @@ uc_volume_config: UCVolumeSourceConfig = load_serializable_config_from_yaml_file
 
 # Default values below for `AgentStorageConfig` 
 agent_name = "pharma_agent"
-uc_catalog_name = uc_volume_config.uc_catalog_name
-uc_schema_name = uc_volume_config.uc_schema_name
+uc_catalog_name = "users"
+uc_schema_name = f"{user_name}"
 
 # Agent storage configuration
 agent_storage_config = AgentStorageConfig(
@@ -112,7 +112,3 @@ print(f"View the MLflow Experiment `{agent_storage_config.mlflow_experiment_name
 from cookbook.config import serializable_config_to_yaml_file
 
 serializable_config_to_yaml_file(agent_storage_config, "./configs/agent_storage_config.yaml")
-
-# COMMAND ----------
-
-
