@@ -175,7 +175,7 @@ from cookbook.config.data_pipeline.data_pipeline_output import DataPipelineOuput
 output_config = DataPipelineOuputConfig(
     # Required parameters
     uc_catalog_name="users", # usually same as source volume catalog, by default is the same as the source volume catalog
-    uc_schema_name="daniel_brookes", # usually same as source volume schema, by default is the same as the source volume schema
+    uc_schema_name=user_name, # usually same as source volume schema, by default is the same as the source volume schema
     #base_table_name=source_config.uc_volume_name, # usually similar / same as the source volume name; by default, is the same as the volume_name
     base_table_name="medicine", # usually similar / same as the source volume name; by default, is the same as the volume_name
     # vector_search_endpoint="REPLACE_ME", # Vector Search endpoint to store the index
